@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function fetchInfrastructureData(pincode) { const response = await apiClient.get(`https://data.gov.in/api/v1/infrastructure?pincode=${pincode}`); return response.data; } module.exports = { fetchInfrastructureData };

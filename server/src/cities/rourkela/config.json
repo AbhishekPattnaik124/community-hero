@@ -1,0 +1,54 @@
+{
+  "city": "Rourkela",
+  "state": "Odisha",
+  "pumping_stations": [
+    {"name": "Panposh Water Treatment Plant", "lat": 22.2156, "lng": 84.8142},
+    {"name": "Mandira Dam", "lat": 22.1893, "lng": 84.7654},
+    {"name": "Chhend Water Tower", "lat": 22.2489, "lng": 84.8756}
+  ],
+  "hospitals": [
+    {"name": "Ispat General Hospital (SAIL)", "lat": 22.2484, "lng": 84.8615},
+    {"name": "Rourkela Government Hospital", "lat": 22.2289, "lng": 84.8654},
+    {"name": "NIT Rourkela Medical Centre", "lat": 22.2523, "lng": 84.9022}
+  ],
+  "markets": [
+    {"name": "Udit Nagar Market", "lat": 22.2334, "lng": 84.8723},
+    {"name": "Civil Township Market", "lat": 22.2289, "lng": 84.8712},
+    {"name": "Chhend Market", "lat": 22.2512, "lng": 84.8834},
+    {"name": "Bondamunda Market", "lat": 22.2134, "lng": 84.8456}
+  ],
+  "bus_stands": [
+    {"name": "Rourkela Bus Stand", "lat": 22.2289, "lng": 84.8634},
+    {"name": "Bondamunda Bus Stop", "lat": 22.2145, "lng": 84.8423}
+  ],
+  "flood_prone_zones": [
+    {"name": "Bondamunda Low Area", "lat": 22.2134, "lng": 84.8412, "risk": "HIGH", "trigger": "Koel > 147m"},
+    {"name": "Jhirpani River Bank", "lat": 22.1956, "lng": 84.8234, "risk": "HIGH", "trigger": "rainfall > 40mm/hr"},
+    {"name": "Panposh Near Confluence", "lat": 22.2045, "lng": 84.8156, "risk": "MEDIUM", "trigger": "Sanjo overflow"}
+  ],
+  "rsp_gates": [
+    {"name": "RSP Main Gate (Gate 1)", "lat": 22.2389, "lng": 84.8534},
+    {"name": "RSP Gate 6 (Bondamunda)", "lat": 22.2123, "lng": 84.8389}
+  ],
+  "police_stations": [
+    {"name": "Rourkela Town PS", "lat": 22.2312, "lng": 84.8645},
+    {"name": "Udit Nagar PS", "lat": 22.2356, "lng": 84.8734},
+    {"name": "Bondamunda PS", "lat": 22.2156, "lng": 84.8434},
+    {"name": "Civil Township PS", "lat": 22.2278, "lng": 84.8689}
+  ],
+  "authority_contacts": {
+    "RMC Commissioner": "rmc.odisha.gov.in",
+    "RMC Control Room": "0661-2400825",
+    "SAIL RSP Township": "0661-2520100",
+    "Rourkela Police": "0661-2400156",
+    "OSPCB": "ospcb.odisha.gov.in",
+    "Odisha SDMA": "osdma.org",
+    "IMD Bhubaneswar": "0674-2596069"
+  },
+  "sail_bounding_box": {
+    "min_lat": 22.2300,
+    "max_lat": 22.2800,
+    "min_lng": 84.8400,
+    "max_lng": 84.8900
+  }
+}

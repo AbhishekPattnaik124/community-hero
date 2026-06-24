@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function syncSBMStatus(districtId) { const response = await apiClient.get(`https://sbm.gov.in/api/v1/status/${districtId}`); return response.data; } module.exports = { syncSBMStatus };

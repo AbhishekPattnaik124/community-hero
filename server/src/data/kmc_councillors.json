@@ -1,0 +1,38 @@
+[
+  {
+    "ward": 1,
+    "name": "Sita Nath Ghosh",
+    "phone": "+91 9830000001",
+    "email": "ward1@kmcgov.in",
+    "party": "TMC",
+    "borough": 1,
+    "responseRate": 85
+  },
+  {
+    "ward": 2,
+    "name": "Dr. Kakali Sen",
+    "phone": "+91 9830000002",
+    "email": "ward2@kmcgov.in",
+    "party": "TMC",
+    "borough": 1,
+    "responseRate": 60
+  },
+  {
+    "ward": 3,
+    "name": "Tarun Saha",
+    "phone": "+91 9830000003",
+    "email": "ward3@kmcgov.in",
+    "party": "TMC",
+    "borough": 1,
+    "responseRate": 92
+  },
+  {
+    "ward": 4,
+    "name": "Goutam Halder",
+    "phone": "+91 9830000004",
+    "email": "ward4@kmcgov.in",
+    "party": "TMC",
+    "borough": 1,
+    "responseRate": 40
+  }
+]

@@ -1,0 +1,81 @@
+require('dotenv').config();
+const http = require('http');
+const app = require('./app');
+const { connectDB } = require('./config/db');
+const { connectRedis } = require('./config/redis');
+
+const { errorHandler, notFound } = require('./middleware/error.middleware');
+
+const { initSocket } = require('./services/socket.service');
+const logger = require('./config/logger');
+const { startJobs } = require('./jobs');
+// const { initializeAgents } = require('./agents/civicMind');
+
+const PORT = process.env.PORT || 5000;
+
+async function bootstrap() {
+  try {
+    // Connect to MongoDB
+    await connectDB();
+    logger.info('✅ MongoDB connected');
+
+    // Connect to Redis (Optional in dev)
+    try {
+      await connectRedis();
+      logger.info('✅ Redis connected');
+    } catch (redisErr) {
+      logger.warn('⚠️ Redis connection failed. Running without cache.');
+    }
+
+    // Initialize Agents
+    // try {
+    //   await initializeAgents();
+    // } catch (e) {
+    //   logger.warn('Could not initialize agents: ' + e.message);
+    // }
+
+    // Create HTTP server
+    const server = http.createServer(app);
+
+    // Initialize Socket.io
+    initSocket(server);
+    logger.info('✅ Socket.io initialized');
+
+    // Start Social Listening Engine
+    const { connectKafka } = require('./config/kafka');
+    const listeningService = require('./services/listeningService');
+    await connectKafka();
+    listeningService.startEngine();
+    logger.info('✅ Social Listening Engine started');
+
+    // Start cron jobs
+    startJobs();
+    logger.info('✅ Cron jobs started');
+
+    server.listen(PORT, () => {
+      logger.info(`🚀 Server running on port ${PORT} [${process.env.NODE_ENV}]`);
+      logger.info(`📚 Swagger docs: http://localhost:${PORT}/api/docs`);
+      logger.info(`🔮 GraphQL: http://localhost:${PORT}/graphql`);
+    });
+
+    // Graceful shutdown
+    process.on('SIGTERM', () => gracefulShutdown(server));
+    process.on('SIGINT', () => gracefulShutdown(server));
+  } catch (err) {
+    console.error('BOOTSTRAP ERROR:', err);
+    logger.error('❌ Bootstrap failed:', err);
+    process.exit(1);
+  }
+}
+
+function gracefulShutdown(server) {
+  logger.info('🛑 Graceful shutdown initiated...');
+  server.close(() => {
+    logger.info('HTTP server closed');
+    process.exit(0);
+  });
+}
+
+bootstrap();
+
+// trigger restart

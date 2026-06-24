@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function fetchMyGovGrievances(city) { const response = await apiClient.get(`https://api.mygov.in/v1/grievances?city=${city}`); return response.data; } module.exports = { fetchMyGovGrievances };

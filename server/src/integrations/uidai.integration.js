@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function verifyAadhaar(aadhaarNumber) { const response = await apiClient.post('https://uidai.gov.in/api/v1/verify', { uid: aadhaarNumber }); return response.data; } module.exports = { verifyAadhaar };

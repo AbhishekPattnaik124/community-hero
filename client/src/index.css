@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-900 text-white font-sans antialiased selection:bg-primary-500/30 selection:text-primary-100;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  /* Enhanced Glassmorphism Base */
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-glass;
+  }
+  
+  .glass-card {
+    @apply bg-gradient-to-br from-white/[0.08] to-transparent backdrop-blur-xl border border-white/10 shadow-glass rounded-3xl overflow-hidden;
+  }
+  
+  .glass-glow {
+    @apply glass-card shadow-glow-sm hover:shadow-glow-md transition-shadow duration-500 relative;
+  }
+  
+  .glass-glow::before {
+    content: '';
+    @apply absolute inset-0 bg-glow-primary opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none;
+  }
+
+  /* Status Colors */
+  .status-open { @apply bg-warning-500/20 text-warning-400 border border-warning-500/30; }
+  .status-in_progress { @apply bg-primary-500/20 text-primary-400 border border-primary-500/30; }
+  .status-resolved { @apply bg-success-500/20 text-success-400 border border-success-500/30; }
+  .status-closed { @apply bg-slate-500/20 text-slate-400 border border-slate-500/30; }
+  .status-escalated { @apply bg-danger-500/20 text-danger-400 border border-danger-500/30; }
+
+  /* Holographic Effect */
+  .holographic-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .holographic-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(0, 212, 255, 0.4) 30%,
+      rgba(255, 255, 255, 0.6) 40%,
+      rgba(108, 99, 255, 0.4) 50%,
+      transparent 60%
+    );
+    opacity: 0;
+    transform: rotate(30deg) translate(-100%, -100%);
+    transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    mix-blend-mode: color-dodge;
+  }
+  
+  .holographic-shine:hover::after {
+    opacity: 1;
+    transform: rotate(30deg) translate(100%, 100%);
+  }
+
+  /* Magnetic Wrapper for Framer Motion interactions */
+  .magnetic-wrap {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-secondary-400 to-accent-400;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-600 rounded-full hover:bg-dark-500 transition-colors;
+}
+
+/* Base Maps Fixes */
+.leaflet-container {
+  @apply font-sans z-0 !important;
+}
+.leaflet-popup-content-wrapper {
+  @apply !bg-dark-800 !text-white !rounded-xl !border !border-white/10 !shadow-glow-sm !p-1;
+}
+.leaflet-popup-tip {
+  @apply !bg-dark-800 !border-white/10;
+}

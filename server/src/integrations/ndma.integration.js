@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function fetchNDMAAlerts(region) { const response = await apiClient.get(`https://ndma.gov.in/api/alerts?region=${region}`); return response.data; } module.exports = { fetchNDMAAlerts };

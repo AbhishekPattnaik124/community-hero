@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function fetchAQIData(stationId) { const response = await apiClient.get(`https://api.data.gov.in/resource/3b01bcb8?station=${stationId}`); return response.data; } module.exports = { fetchAQIData };

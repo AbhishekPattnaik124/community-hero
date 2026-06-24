@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function fetchOSMData(bbox) { const response = await apiClient.get(`https://overpass-api.de/api/interpreter?data=[out:json];node(${bbox});out;`); return response.data; } module.exports = { fetchOSMData };

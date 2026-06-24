@@ -1,0 +1,1 @@
+const apiClient = require('./apiClient'); async function fetchWeatherData(lat, lng) { const response = await apiClient.get(`https://imd.gov.in/api/v1/weather?lat=${lat}&lng=${lng}`); return response.data; } module.exports = { fetchWeatherData };

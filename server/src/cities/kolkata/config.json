@@ -1,0 +1,30 @@
+{
+  "city": "Kolkata",
+  "state": "West Bengal",
+  "weather_station": "Alipore (IMD)",
+  "pumping_stations": [
+    {"name": "Mominpur Pumping Station", "lat": 22.5361, "lng": 88.3278},
+    {"name": "Tollygunge Pumping Station", "lat": 22.4950, "lng": 88.3444},
+    {"name": "Ballygunge Pumping Station", "lat": 22.5278, "lng": 88.3611}
+  ],
+  "markets": [
+    {"name": "New Market", "lat": 22.5586, "lng": 88.3528},
+    {"name": "Gariahat Market", "lat": 22.5181, "lng": 88.3639},
+    {"name": "Lake Market", "lat": 22.5139, "lng": 88.3472}
+  ],
+  "waste_management": {
+    "landfill": {"name": "Dhapa Landfill", "lat": 22.5411, "lng": 88.4239}
+  },
+  "roads": [
+    "EM Bypass",
+    "VIP Road",
+    "Park Street",
+    "AJC Bose Road"
+  ],
+  "authority_contacts": {
+    "KMC Control Room": "033-2286-1212",
+    "PWD Bengal": "pwd.wb.gov.in",
+    "Kolkata Traffic Police": "@KolkataTraffic",
+    "INTACH Kolkata": "intach.org/kolkata"
+  }
+}
