@@ -1,0 +1,56 @@
+services:
+  # ─── FRONTEND (React / Vite) ──────────────────────────
+  - type: web
+    name: community-hero-client
+    env: static
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: ./client/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: community-hero-server
+          envVarKey: RENDER_EXTERNAL_URL
+          # We'll append /api to this in the code, or just rely on VITE_API_URL being the base.
+          # Actually, Render's external URL doesn't have a trailing slash.
+      
+      - key: VITE_SOCKET_URL
+        fromService:
+          type: web
+          name: community-hero-server
+          envVarKey: RENDER_EXTERNAL_URL
+
+  # ─── BACKEND (Node.js / Express) ──────────────────────
+  - type: web
+    name: community-hero-server
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # You will provide this in the Render Dashboard from MongoDB Atlas
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false # You will provide this in the Render Dashboard
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: community-hero-client
+          envVarKey: RENDER_EXTERNAL_URL
+
+  # ─── ML SERVICE (Python / FastAPI) ────────────────────
+  - type: web
+    name: community-hero-ml
+    env: python
+    buildCommand: cd ml-service && pip install -r requirements.txt
+    startCommand: cd ml-service && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: GEMINI_API_KEY
+        sync: false # You will provide this in the Render Dashboard
