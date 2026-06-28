@@ -1,76 +1,66 @@
+"""
+ml_models.py
+Lightweight civic vision model — no YOLO/CLIP heavy deps.
+Uses Pillow + numpy for basic image analysis with Gemini as the AI backbone.
+"""
 import logging
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter, ImageStat
 
 logger = logging.getLogger(__name__)
 
-class CivicVisionModel:
-    def __init__(self, model_path: str = "yolov8n.pt"):
-        self.model_path = model_path
-        self.model = None
-        self.use_mock = False
-        self._is_loaded = False
 
-    def _load_model(self):
-        if self._is_loaded:
-            return
-        try:
-            from ultralytics import YOLO
-            self.model = YOLO(self.model_path)
-            logger.info(f"Loaded YOLO model from {self.model_path}")
-        except Exception as e:
-            logger.warning(f"Could not load real YOLO model, using mock fallback. Error: {e}")
-            self.use_mock = True
-        self._is_loaded = True
+class CivicVisionModel:
+    """
+    Lightweight image analyser using only Pillow + numpy.
+    Analyses brightness, contrast, and colour distribution as signals
+    for civic issue severity, then defers to Gemini for semantic understanding.
+    """
+
+    CIVIC_CATEGORIES = [
+        "pothole", "waterlogging", "streetlight",
+        "garbage", "construction", "pollution", "other",
+    ]
 
     def detect(self, image: Image.Image):
-        self._load_model()
-        if self.use_mock or not self.model:
-            # Return simulated detections for a civic issue
-            return [
-                {"label": "pothole", "confidence": 0.92, "bbox": [50, 50, 200, 200]}
-            ]
-        
-        results = self.model(image)
-        detections = []
-        for r in results:
-            boxes = r.boxes
-            for box in boxes:
-                detections.append({
-                    "label": self.model.names[int(box.cls[0])],
-                    "confidence": float(box.conf[0]),
-                    "bbox": box.xyxy[0].tolist()
-                })
-        return detections
-
-class CLIPDuplicateDetector:
-    def __init__(self):
-        self.processor = None
-        self.model = None
-        self.use_mock = False
-        self._is_loaded = False
-
-    def _load_model(self):
-        if self._is_loaded:
-            return
+        """
+        Returns a list of pseudo-detections derived from image statistics.
+        In production the Gemini vision call in gemini_service supersedes this.
+        """
         try:
-            from transformers import CLIPProcessor, CLIPModel
-            self.model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-            self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-            logger.info("Loaded CLIP model for duplicate detection")
+            img_rgb = image.convert("RGB")
+            stat = ImageStat.Stat(img_rgb)
+            mean_brightness = sum(stat.mean) / 3
+
+            # Dark image → likely nighttime streetlight issue
+            if mean_brightness < 60:
+                return [{"label": "streetlight", "confidence": 0.78, "bbox": [0, 0, image.width, image.height]}]
+
+            # High red channel → possible warning/damage
+            r, g, b = stat.mean
+            if r > g + 30 and r > b + 30:
+                return [{"label": "pothole", "confidence": 0.72, "bbox": [0, 0, image.width, image.height]}]
+
+            # Default: return generic civic issue detection
+            return [{"label": "civic_issue", "confidence": 0.65, "bbox": [0, 0, image.width, image.height]}]
         except Exception as e:
-            logger.warning(f"Could not load CLIP model, using mock fallback. Error: {e}")
-            self.use_mock = True
-        self._is_loaded = True
+            logger.error(f"Image detection error: {e}")
+            return [{"label": "civic_issue", "confidence": 0.50, "bbox": [0, 0, 100, 100]}]
+
+
+class SimpleDuplicateDetector:
+    """Pixel-hash based duplicate detector (no CLIP/transformers needed)."""
 
     def extract_embedding(self, image: Image.Image):
-        self._load_model()
-        if self.use_mock or not self.model:
-            return np.random.rand(512).tolist()
-            
-        inputs = self.processor(images=image, return_tensors="pt")
-        outputs = self.model.get_image_features(**inputs)
-        return outputs.detach().numpy()[0].tolist()
+        """Returns a 64-dim normalised histogram as an embedding vector."""
+        try:
+            small = image.convert("L").resize((8, 8), Image.LANCZOS)
+            arr = np.array(small, dtype=float).flatten()
+            norm = np.linalg.norm(arr)
+            return (arr / norm if norm > 0 else arr).tolist()
+        except Exception:
+            return [0.0] * 64
+
 
 vision_model = CivicVisionModel()
-duplicate_detector = CLIPDuplicateDetector()
+duplicate_detector = SimpleDuplicateDetector()

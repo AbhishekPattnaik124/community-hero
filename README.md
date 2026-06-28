@@ -1,204 +1,321 @@
 # 🏙️ Community Hero — Rourkela Civic Issue Platform
 
-<div align="center">
+> **Empowering Rourkela citizens to report, track, and resolve civic issues using AI**
 
-![Community Hero Banner](https://via.placeholder.com/900x300/1e293b/3b82f6?text=Community+Hero+%7C+Rourkela)
-
-**Empowering 6 lakh Rourkela citizens to report, track, and resolve civic issues using AI**
-
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Click_Here-blue?style=for-the-badge)](https://community-hero.up.railway.app)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/Abhishekpattnaik124/community-hero)
-[![Built with Gemini](https://img.shields.io/badge/Google_Gemini_1.5_Pro-Powered-orange?style=for-the-badge&logo=google)](https://aistudio.google.com)
-
-</div>
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-community--hero--client.onrender.com-6366f1?style=for-the-badge)](https://community-hero-client.onrender.com)
+[![GitHub](https://img.shields.io/badge/GitHub-AbhishekPattnaik124%2Fcommunity--hero-181717?style=for-the-badge&logo=github)](https://github.com/AbhishekPattnaik124/community-hero)
+[![Backend](https://img.shields.io/badge/API-community--hero--server.onrender.com-10b981?style=for-the-badge)](https://community-hero-server.onrender.com/health)
+[![ML Service](https://img.shields.io/badge/ML-community--hero--ml.onrender.com-f59e0b?style=for-the-badge)](https://community-hero-ml.onrender.com/health)
 
 ---
 
 ## 🌐 Live URLs
 
-| Service | URL |
-|---|---|
-| **Frontend App** | _Coming soon — deploy to Railway/Vercel_ |
-| **Backend API** | _Coming soon_ |
-| **API Docs (Swagger)** | `/api/docs` |
+| Service | URL | Status |
+|---------|-----|--------|
+| **Frontend** | https://community-hero-client.onrender.com | ✅ Live |
+| **Backend API** | https://community-hero-server.onrender.com | ✅ Live |
+| **ML Service** | https://community-hero-ml.onrender.com | ✅ Live |
+| **API Docs** | https://community-hero-server.onrender.com/api/docs | ✅ Live |
+
+> ⚠️ **Free Tier Note:** Render free instances spin down after 15 minutes of inactivity. First request may take ~30–45 seconds to wake up. After that, response times are instant.
 
 ---
 
-## 📸 Screenshots
+## 📸 Features
 
-| Home — Rourkela Map | AI Issue Analysis | Ward Dashboard |
-|---|---|---|
-| ![Home](docs/screenshots/home.png) | ![AI](docs/screenshots/ai.png) | ![Dashboard](docs/screenshots/dashboard.png) |
+### 🤖 AI-Powered Issue Detection (Gemini 1.5 Pro)
+Upload a photo of a civic issue → Gemini analyzes it and returns:
+- Issue category (pothole, waterlogging, streetlight, etc.)
+- Severity score (1–5)
+- Urgency level (low/medium/high/critical)
+- Responsible authority (RMC or SAIL RSP)
+- Estimated fix time
+- Safety risk assessment
+
+### 🗺️ Interactive Rourkela Map
+- Real-time issue pins with color coding by severity
+- All 40 RMC wards visualized
+- SAIL RSP sector boundaries
+- Flood-prone zone overlays (Bondamunda, Jhirpani, Panposh)
+- Heatmap mode for issue density
+
+### 🌊 Flood Prediction Engine
+- Real-time Koel River level monitoring
+- Mandira Dam level tracking
+- Ward-wise flood risk alerts
+- Monsoon pattern analysis
+
+### 🏭 Dual Authority Routing (Unique to Rourkela)
+Issues are automatically routed to:
+- **RMC** (Rourkela Municipal Corporation) — civic wards 1–40
+- **SAIL RSP** (Rourkela Steel Plant Township) — Sectors 1–28
+- **OSPCB** — pollution complaints
+- **OSDMA** — disaster/flood alerts
+- **NHAI** — national highway issues
+
+### ⚡ Real-Time Updates (Socket.io)
+- Live issue feed
+- Upvote notifications
+- Status change alerts
+- Flood emergency broadcast
+
+### 🏆 Gamification System
+- Points for reporting (10 pts), verifying (5 pts), upvoting
+- Badges: First Report, Verified Hero, Top Reporter, Flood Watcher, 7-Day Streak
+- Ward-wise leaderboard
+- Weekly/Monthly/All-Time rankings
+
+### 📊 Analytics Dashboard
+- Bento-grid stats for all 40 wards
+- Category-wise pie charts
+- Resolution time metrics
+- AQI monitoring for Rourkela
+- Authority comparison (RMC vs SAIL RSP)
+
+### 📱 PWA Support
+- Works offline
+- Installable on Android/iOS
+- Background sync for reports
 
 ---
 
-## ✨ Key Features
-
-| Feature | Description |
-|---|---|
-| 🤖 **AI Issue Detection** | Google Gemini 1.5 Pro Vision analyzes photos and identifies issue type, severity, and authority |
-| 🗺️ **Rourkela Interactive Map** | All 40 RMC wards with real GPS data, issue pins, flood zones, RSP sector boundaries |
-| 🌊 **Flood Prediction Engine** | Real-time risk assessment using Koel River levels, Mandira Dam data, and IMD rainfall |
-| 🏭 **Dual Authority Routing** | Smart routing between RMC (municipal) and SAIL RSP (steel plant township) jurisdictions |
-| ⚡ **Real-time Updates** | Socket.io — new issues appear on map instantly for all users |
-| 🏆 **Gamification System** | Points, badges, streaks, and leaderboard to reward active citizens |
-| 📊 **Ward Analytics Dashboard** | Resolution rates, trust index, and issue heatmaps for all 40 wards |
-| 🌿 **AQI Monitor** | Real-time air quality for Rourkela (elevated near RSP Steel Plant) |
-| 📱 **PWA Support** | Works offline, installable on mobile |
-| 🔐 **Google OAuth** | Sign in with Google for instant access |
-
----
-
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** + Vite + React Router v6
-- **TailwindCSS** + Framer Motion animations
-- **Mapbox GL JS** — interactive ward map
-- **Recharts** — analytics visualizations
-- **Socket.io Client** — real-time sync
-- **Zustand** — state management
+| Technology | Purpose |
+|-----------|---------|
+| React 18 + Vite 8 | UI framework |
+| TailwindCSS 3 | Styling |
+| Framer Motion | Animations |
+| Mapbox GL JS | Interactive maps |
+| Socket.io Client | Real-time events |
+| Recharts | Data visualization |
+| Zustand | State management |
+| React Query | Server state |
+| Lucide React | Icons |
 
 ### Backend
-- **Node.js** + Express 4
-- **MongoDB** + Mongoose — main database
-- **Redis** — caching (optional, graceful fallback)
-- **Socket.io** — real-time WebSocket
-- **JWT** — authentication
-- **Puppeteer** — PDF report generation
-- **node-cron** — scheduled jobs
+| Technology | Purpose |
+|-----------|---------|
+| Node.js 24 + Express | API server |
+| MongoDB + Mongoose | Database |
+| Socket.io | Real-time events |
+| JWT | Authentication |
+| Passport.js + Google OAuth | Auth strategies |
+| Apollo Server + GraphQL | GraphQL API |
+| Redis (optional) | Caching |
+| Winston | Logging |
+| node-cron | Scheduled jobs |
+| Swagger UI | API documentation |
 
-### Python ML Service
-- **FastAPI** — ML inference API
-- **Google Gemini 1.5 Pro Vision** — image analysis
-- **Prophet** — time-series forecasting
-- **Scikit-learn** — predictive models
-- **SciPy** — budget optimization (Linear Programming)
+### ML Service
+| Technology | Purpose |
+|-----------|---------|
+| FastAPI + Python 3.12 | ML microservice |
+| Google Gemini 1.5 Pro | Image analysis + AI |
+| scikit-learn | DBSCAN hotspot clustering, Random Forest |
+| NumPy + Pandas | Data processing |
+| Pillow | Image processing |
+| SciPy | Budget optimization (Linear Programming) |
 
-### 🔵 Google Technologies Used
-| Technology | Usage |
-|---|---|
-| ✅ **Google Gemini 1.5 Pro Vision** | Analyzing civic issue photos |
-| ✅ **Google AI Studio** | Model prompting and testing |
-| ✅ **Google OAuth 2.0** | User authentication |
-| ✅ **Google Maps Geocoding API** | Address → GPS conversion |
-| ✅ **Google Generative AI SDK** | AI pipeline integration |
-
----
-
-## 🏙️ Rourkela-Specific Data
-
-This platform is built specifically for **Rourkela, Odisha, India**:
-
-- 📍 **40 RMC Wards** with real GPS coordinates and councillor data
-- 🏭 **SAIL RSP Sectors 1–28** with separate authority routing
-- 🌊 **3 flood-prone zones**: Bondamunda, Jhirpani, Panposh
-- 🏥 **4 hospitals** (IGH, Govt Hospital, NIT Medical, Shanti NH)
-- 🚔 **5 police stations** with contact numbers
-- 🌊 **Mandira Dam** monitoring (critical level: 148m)
-- 🏞️ **Koel River** monitoring (critical level: 147m)
+### Google Technologies Used ✅
+- ✅ **Google Gemini 1.5 Pro** — Civic issue image analysis, AI routing
+- ✅ **Google AI Studio** — API key management
+- ✅ **Google OAuth 2.0** — Social login
+- ✅ **Google Maps Geocoding** — Address resolution
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Local Development Setup
 
 ### Prerequisites
-- Node.js >= 18
-- Python >= 3.10
-- MongoDB Atlas account (free tier works)
-- Gemini API key (free from [aistudio.google.com](https://aistudio.google.com))
-
-### 1. Clone & Setup Backend
 ```bash
-git clone https://github.com/Abhishekpattnaik124/community-hero
-cd community-hero/server
-npm install
-cp .env.example .env
-# Fill in MONGO_URI, GEMINI_API_KEY, JWT_SECRET
+node --version  # >= 18
+python --version  # >= 3.10
+```
+
+### 1. Clone
+```bash
+git clone https://github.com/AbhishekPattnaik124/community-hero.git
+cd community-hero
+```
+
+### 2. Backend Setup
+```bash
+cd server
+npm install --legacy-peer-deps
+cp ../.env.example .env
+# Edit .env and fill in MONGO_URI, GEMINI_API_KEY, etc.
 npm run dev
+# Server runs at http://localhost:5000
 ```
 
-### 2. Setup Frontend
+### 3. Frontend Setup
 ```bash
-cd ../client
-npm install
-cp .env.example .env
-# Fill in VITE_API_URL, VITE_GOOGLE_CLIENT_ID
+cd client
+npm install --legacy-peer-deps
+# Create .env file:
+echo "VITE_API_URL=http://localhost:5000" > .env
+echo "VITE_SOCKET_URL=http://localhost:5000" >> .env
 npm run dev
+# App runs at http://localhost:5173
 ```
 
-### 3. Seed the Database
+### 4. ML Service Setup
 ```bash
-cd ../server
-node src/seeds/seedDatabase.js
-```
-
-### 4. (Optional) Python ML Service
-```bash
-cd ../ml-service
+cd ml-service
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+# Create .env file:
+echo "GEMINI_API_KEY=your_key_here" > .env
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+# ML Service runs at http://localhost:8000
+```
+
+### 5. Seed Database
+```bash
+cd server
+npm run seed
 ```
 
 ---
 
-## 🗂️ Project Structure
+## 📁 Project Structure
 
 ```
 community-hero/
-├── client/                  # React + Vite frontend
+├── client/                   # React + Vite frontend
+│   ├── src/
+│   │   ├── api/              # Axios instance + interceptors
+│   │   ├── components/       # Reusable UI components
+│   │   │   ├── dashboard/    # AQI Monitor, Flood Predictor, Stats
+│   │   │   ├── layout/       # Navbar, Footer
+│   │   │   └── ui/           # Shared UI primitives
+│   │   ├── context/          # React contexts (Socket, Auth)
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── pages/            # Route pages
+│   │   │   ├── Landing.jsx   # Home page with live map
+│   │   │   ├── ReportIssue.jsx  # 4-step AI-powered form
+│   │   │   ├── Dashboard.jsx # Analytics dashboard
+│   │   │   ├── Leaderboard.jsx  # Gamification
+│   │   │   ├── MapView.jsx   # Full map view
+│   │   │   └── ...
+│   │   ├── store/            # Zustand stores
+│   │   └── utils/            # Constants, helpers
+│   └── vite.config.js
+│
+├── server/                   # Node.js + Express backend
 │   └── src/
-│       ├── pages/           # 14+ complete pages
-│       ├── components/      # Reusable components
-│       └── utils/constants.js  # Rourkela configuration
-├── server/                  # Node.js + Express backend
-│   └── src/
-│       ├── models/          # Mongoose schemas
-│       ├── routes/          # 15+ route files
-│       ├── services/        # AI, flood prediction, etc.
-│       └── seeds/           # 20 Rourkela issue seed data
-├── ml-service/              # Python FastAPI ML service
+│       ├── config/           # DB, Redis, Kafka, Passport, Swagger
+│       ├── controllers/      # Business logic
+│       ├── graphql/          # Apollo GraphQL schema + resolvers
+│       ├── middleware/        # Auth, rate limit, error handling
+│       ├── models/           # Mongoose schemas (User, Issue, etc.)
+│       ├── routes/           # Express route handlers
+│       ├── seeds/            # Database seeder (20 real Rourkela issues)
+│       ├── services/         # Gemini AI, Socket, Listening engine
+│       └── utils/            # JWT, ApiResponse, rourkelaData (40 wards)
+│
+├── ml-service/               # Python FastAPI ML microservice
 │   └── app/
-│       ├── services/        # Predictive models
-│       └── api/routes.py    # ML endpoints
-├── mobile/                  # React Native field officer app
-└── .github/workflows/       # CI/CD pipelines
+│       ├── api/              # FastAPI routes + endpoints
+│       ├── core/             # Config, Kafka client
+│       ├── models/           # Pydantic schemas, ML model wrappers
+│       ├── services/         # Gemini, Analytics, Hotspot, Vision
+│       └── utils/            # Image utilities
+│
+├── render.yaml               # Render deployment config
+├── docker-compose.yml        # Local Docker setup
+└── .env.example              # Environment variable template
 ```
 
 ---
 
-## 🔑 Test Credentials
+## 🗺️ Rourkela-Specific Data
+
+### All 40 RMC Wards
+Real ward names, councillor info, GPS coordinates, and authority mapping.
+
+### Flood-Prone Zones
+| Zone | Risk | Trigger |
+|------|------|---------|
+| Bondamunda Low Area | HIGH | Koel River > 147m elevation |
+| Jhirpani River Bank | HIGH | Rainfall > 40mm/hour |
+| Panposh Confluence | MEDIUM | Sanjo River overflow |
+
+### Dual Authority Zones
+- **RMC** handles: Wards 1–40 (civic infrastructure)
+- **SAIL RSP Township** handles: Sectors 1–28 (steel plant residential)
+- **OSPCB** handles: Industrial pollution complaints
+- **OSDMA** handles: Flood/disaster emergencies
+
+---
+
+## 👤 Test Credentials
 
 | Role | Email | Password |
-|---|---|---|
-| Admin | `admin@communityhero.in` | `Admin@1234` |
-| Citizen | `rajesh@rourkela.in` | `User@1234` |
-| Citizen | `priya@rourkela.in` | `User@1234` |
+|------|-------|----------|
+| Admin | admin@communityhero.in | Admin@1234 |
+| Citizen | rajesh@rourkela.in | User@1234 |
+| Citizen | priya@rourkela.in | User@1234 |
+| Citizen | sunita@rourkela.in | User@1234 |
 
 ---
 
-## 📊 Evaluation Criteria Alignment
+## 🏆 Hackathon Submission
 
-| Criterion | Implementation |
-|---|---|
-| **Problem Solving (20%)** | Real Rourkela civic issues — waterlogging, RSP pollution, pothole tracking |
-| **Agentic Depth (20%)** | Gemini AI analysis pipeline, autonomous issue routing, flood prediction agents |
-| **Innovation (20%)** | Dual RMC/SAIL RSP authority routing unique to Rourkela; flood ML from real river data |
-| **Google Technologies (15%)** | Gemini 1.5 Pro, Google OAuth, Google AI Studio, Maps Geocoding |
-| **Product Design (10%)** | Dark theme, Framer Motion animations, interactive Mapbox map |
-| **Technical Excellence (10%)** | MERN + FastAPI + Socket.io + Redis + Kafka social listening |
-| **Completeness (5%)** | 14+ pages, seeded DB, mobile app, CI/CD, monitoring |
+**Event:** Vibe2Ship Hackathon 2026 — Coding Ninjas × Google for Developers
+
+### Problem Being Solved
+Rourkela is a unique city with two distinct administrative authorities — RMC for civic wards and SAIL RSP Township for steel plant sectors. Citizens have no unified platform to:
+1. Report civic issues with AI-powered categorization
+2. Know which authority (RMC vs SAIL) is responsible
+3. Track issue resolution in real-time
+4. Get flood alerts specific to Rourkela's geography
+
+### Innovation
+- **Dual Authority Routing**: Unique to Rourkela — auto-routes to RMC or SAIL RSP
+- **Hyperlocal AI**: Gemini trained on Rourkela-specific civic context
+- **Flood Intelligence**: Koel River + Mandira Dam level monitoring
+- **Ward-Level Accountability**: All 40 RMC wards with councillor contacts
+
+### Evaluation Criteria Coverage
+| Criteria | Implementation |
+|----------|---------------|
+| Problem Solving (20%) | Real Rourkela civic pain points solved |
+| Agentic Depth (20%) | Gemini AI + automated routing + cron jobs |
+| Innovation (20%) | SAIL RSP dual authority unique to city |
+| Google Technologies (15%) | Gemini 1.5 Pro + Google OAuth + Maps API |
+| Product Design (10%) | Glassmorphism dark UI with animations |
+| Technical Excellence (10%) | MERN + FastAPI + Socket.io + GraphQL |
+| Completeness (5%) | All features working and deployed |
 
 ---
 
-## 🏆 Built For
+## 📝 Environment Variables
 
-**Vibe2Ship Hackathon 2026** by Coding Ninjas × Google for Developers
+See [`.env.example`](.env.example) for the full list. Critical variables:
 
-> *"Every pothole reported, every streetlight fixed, every flood predicted — Community Hero makes Rourkela a smarter city, one civic report at a time."*
+```env
+# Backend (server/.env)
+MONGO_URI=mongodb+srv://...
+JWT_SECRET=64_character_random_string
+GEMINI_API_KEY=your_gemini_key
+CLIENT_URL=https://community-hero-client.onrender.com
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_secret
+
+# Frontend (client/.env)
+VITE_API_URL=https://community-hero-server.onrender.com
+VITE_SOCKET_URL=https://community-hero-server.onrender.com
+VITE_MAPBOX_TOKEN=your_mapbox_token
+
+# ML Service (ml-service/.env)
+GEMINI_API_KEY=your_gemini_key
+```
 
 ---
 
-<div align="center">
-Made with ❤️ in Rourkela, Odisha 🇮🇳 | &copy; 2026 Community Hero
-</div>
+## 📄 License
+
+MIT License — Built for Vibe2Ship Hackathon 2026
