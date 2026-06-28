@@ -9,9 +9,15 @@ const RISK_CONFIG = {
   CRITICAL: { color: 'text-red-400',    bg: 'bg-red-400/10    border-red-400/30',    label: 'CRITICAL', emoji: '🚨' },
 };
 
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return 'http://localhost:5000/api';
+  return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+};
+
 async function fetchFloodData() {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/analytics/flood-prediction`);
+    const res = await fetch(`${getApiUrl()}/analytics/flood-prediction`);
     if (!res.ok) throw new Error('API error');
     return await res.json();
   } catch {

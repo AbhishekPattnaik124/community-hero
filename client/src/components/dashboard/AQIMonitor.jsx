@@ -15,10 +15,16 @@ function getAQILevel(aqi) {
   return AQI_LEVELS.find(l => aqi <= l.max) || AQI_LEVELS[AQI_LEVELS.length - 1];
 }
 
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return 'http://localhost:5000/api';
+  return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+};
+
 async function fetchAQI() {
   try {
     // Production: fetch from https://api.data.gov.in CPCB AQI for Rourkela
-    const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/environment/aqi`);
+    const res = await fetch(`${getApiUrl()}/environment/aqi`);
     if (!res.ok) throw new Error('API error');
     return await res.json();
   } catch {

@@ -7,8 +7,11 @@ const { Kafka } = require('kafkajs');
 const kafka = new Kafka({
   clientId: 'community-hero-social-listener',
   brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
-  // ssl: true,
-  // sasl: { mechanism: 'plain', username: '...', password: '...' }
+  connectionTimeout: 3000,
+  retry: {
+    initialRetryTime: 300,
+    retries: 2
+  }
 });
 
 const producer = kafka.producer();

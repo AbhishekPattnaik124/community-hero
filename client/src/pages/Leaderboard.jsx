@@ -3,7 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Medal, Star, TrendingUp, Award } from 'lucide-react';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return 'http://localhost:5000/api';
+  return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+};
+const API_URL = getApiUrl();
 
 const BADGE_META = {
   first_report:    { label: 'First Report',    icon: '📝', color: 'bg-blue-100 text-blue-700' },
