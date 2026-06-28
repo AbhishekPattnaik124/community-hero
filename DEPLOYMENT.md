@@ -33,29 +33,61 @@ If you haven't already got a key for the issue analysis:
 
 ---
 
-## Step 3: Deploy to Render (1-Click Blueprint)
-The code repository already contains a `render.yaml` file, which is a blueprint that tells Render exactly how to build and link the Frontend, Backend, and AI Service automatically.
+## Step 3: Manual Deployment (100% Free Tier)
+Because Render Blueprints require a paid plan, we will deploy the 3 services manually.
 
+### 3A. Deploy the Node.js Backend (Web Service)
 1. Go to **[Render.com](https://render.com/)** and sign up/log in with your GitHub account.
-2. Click the **New +** button in the top right, and select **Blueprint**.
-3. Connect your GitHub repository: `AbhishekPattnaik124/community-hero`.
-4. Render will scan the repository and detect the `render.yaml` file.
-5. You will be prompted to provide two missing environment variables:
-   - `MONGO_URI`: Paste the string you got from Step 1.
-   - `GEMINI_API_KEY`: Paste the key you got from Step 2.
-6. Click **Apply** or **Deploy**.
+2. Click the **New +** button in the top right, and select **Web Service**.
+3. Select **Build and deploy from a Git repository** and connect your repository: `AbhishekPattnaik124/community-hero`.
+4. Fill in the following details:
+   - **Name:** `community-hero-server`
+   - **Root Directory:** `server`
+   - **Runtime:** `Node`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Instance Type:** Free
+5. Scroll down to **Environment Variables** and add:
+   - `NODE_ENV`: `production`
+   - `MONGO_URI`: (Paste the MongoDB string you got from Step 1)
+   - `JWT_SECRET`: (Type any random secure string, e.g., `hackathon2026secret`)
+   - `GEMINI_API_KEY`: (Paste the key from Step 2)
+6. Click **Create Web Service**. Wait for it to build and copy the generated URL (e.g., `https://community-hero-server.onrender.com`).
+
+### 3B. Deploy the ML Service (Web Service)
+1. Click the **New +** button in the top right again, and select **Web Service**.
+2. Connect the same repository.
+3. Fill in the details:
+   - **Name:** `community-hero-ml`
+   - **Root Directory:** `ml-service`
+   - **Runtime:** `Python 3`
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+   - **Instance Type:** Free
+4. Add **Environment Variables**:
+   - `PYTHON_VERSION`: `3.12.0`
+   - `GEMINI_API_KEY`: (Paste the key from Step 2)
+5. Click **Create Web Service**. 
+
+### 3C. Deploy the React Frontend (Static Site)
+1. Click the **New +** button one last time, and select **Static Site** (this is also 100% free).
+2. Connect the same repository.
+3. Fill in the details:
+   - **Name:** `community-hero-client`
+   - **Root Directory:** `client`
+   - **Build Command:** `npm install && npm run build`
+   - **Publish Directory:** `dist`
+4. Add **Environment Variables**:
+   - `VITE_API_URL`: (Paste the backend URL you copied in step 3A, e.g., `https://community-hero-server.onrender.com`)
+   - `VITE_SOCKET_URL`: (Paste the same backend URL again)
+5. Click **Create Static Site**.
 
 ---
 
 ## Step 4: Watch it Build!
-Render will now start building three separate services simultaneously:
-1. **`community-hero-server`**: Your Node.js backend.
-2. **`community-hero-ml`**: Your Python AI service.
-3. **`community-hero-client`**: Your React frontend.
+Render is now building your Frontend, Backend, and ML Service manually. It will take about 3–5 minutes. 
 
-It will take about 3–5 minutes for all three to build. 
-
-Once the `community-hero-client` says **"Live"**, click on its URL (e.g., `https://community-hero-client.onrender.com`).
+Once the `community-hero-client` (Static Site) says **"Live"**, click on its URL.
 
 **🎉 Congratulations! Your Community Hero app is now live for the hackathon!**
 
