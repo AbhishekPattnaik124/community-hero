@@ -44,7 +44,7 @@ Because Render Blueprints require a paid plan, we will deploy the 3 services man
    - **Name:** `community-hero-server`
    - **Root Directory:** `server`
    - **Runtime:** `Node`
-   - **Build Command:** `npm install`
+   - **Build Command:** `npm install --legacy-peer-deps`
    - **Start Command:** `npm start`
    - **Instance Type:** Free
 5. Scroll down to **Environment Variables** and add:
@@ -75,7 +75,7 @@ Because Render Blueprints require a paid plan, we will deploy the 3 services man
 3. Fill in the details:
    - **Name:** `community-hero-client`
    - **Root Directory:** `client`
-   - **Build Command:** `npm install && npm run build`
+   - **Build Command:** `npm install --legacy-peer-deps && npm run build`
    - **Publish Directory:** `dist`
 4. Add **Environment Variables**:
    - `VITE_API_URL`: (Paste the backend URL you copied in step 3A, e.g., `https://community-hero-server.onrender.com`)
