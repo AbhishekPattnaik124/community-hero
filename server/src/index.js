@@ -19,6 +19,26 @@ async function bootstrap() {
     await connectDB();
     logger.info('✅ MongoDB connected');
 
+    // Auto-seed on first deploy (if DB is empty)
+    try {
+      const User = require('./models/User.model');
+      const count = await User.countDocuments();
+      if (count === 0) {
+        logger.info('📭 Empty database detected — running auto-seed...');
+        const seed = require('./seeds/seedDatabase');
+        if (typeof seed.runSeed === 'function') {
+          await seed.runSeed();
+        } else {
+          logger.warn('seedDatabase.js does not export runSeed(); skipping auto-seed');
+        }
+        logger.info('🌱 Auto-seed complete');
+      } else {
+        logger.info(`📊 Database has ${count} users — skipping auto-seed`);
+      }
+    } catch (seedErr) {
+      logger.warn(`⚠️ Auto-seed failed (non-fatal): ${seedErr.message}`);
+    }
+
     // Connect to Redis (Optional in dev)
     try {
       await connectRedis();

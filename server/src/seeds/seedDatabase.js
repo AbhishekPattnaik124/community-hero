@@ -187,31 +187,33 @@ async function seed() {
     process.exit(1);
   }
 
-  await mongoose.connect(uri);
-  console.log('✅ Connected to MongoDB');
+  // Only connect if not already connected (when called from index.js MongoDB is already up)
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(uri);
+    console.log('✅ Connected to MongoDB');
+  }
 
-  // Clear existing seed data
-  await Promise.all([
-    User.deleteMany({ email: { $regex: /@(rourkela|communityhero)/ } }),
-    Issue.deleteMany({ 'location.coordinates': { $exists: true } }),
-  ]);
-  console.log('🗑️  Cleared previous seed data');
-
-  // Create admin user
+  // Create admin user (upsert — safe to call multiple times)
   const adminPw = await bcrypt.hash('Admin@1234', 12);
-  const admin = await User.create({
-    name: 'Community Hero Admin',
-    email: 'admin@communityhero.in',
-    password: adminPw,
-    role: 'admin',
-    ward: 1,
-    points: 0,
-    isVerified: true,
-    phone: '+916612400825',
-  });
-  console.log('✅ Admin user created: admin@communityhero.in / Admin@1234');
+  const admin = await User.findOneAndUpdate(
+    { email: 'admin@communityhero.in' },
+    {
+      $setOnInsert: {
+        name: 'Community Hero Admin',
+        email: 'admin@communityhero.in',
+        password: adminPw,
+        role: 'admin',
+        ward: 1,
+        points: 0,
+        isVerified: true,
+        phone: '+916612400825',
+      },
+    },
+    { upsert: true, new: true }
+  );
+  console.log('✅ Admin user ready: admin@communityhero.in / Admin@1234');
 
-  // Create 5 test citizens
+  // Create 5 test citizens (upsert)
   const citizens = [
     { name: 'Rajesh Kumar',   email: 'rajesh@rourkela.in',  ward: 5,  points: 180 },
     { name: 'Priya Patel',    email: 'priya@rourkela.in',   ward: 12, points: 245 },
@@ -223,49 +225,66 @@ async function seed() {
   const citizenDocs = await Promise.all(
     citizens.map(async (c) => {
       const pw = await bcrypt.hash('User@1234', 12);
-      return User.create({ ...c, password: pw, role: 'citizen', isVerified: true });
+      return User.findOneAndUpdate(
+        { email: c.email },
+        { $setOnInsert: { ...c, password: pw, role: 'citizen', isVerified: true } },
+        { upsert: true, new: true }
+      );
     })
   );
-  console.log(`✅ ${citizenDocs.length} citizen users created`);
+  console.log(`✅ ${citizenDocs.length} citizen users ready`);
 
-  // Seed 20 issues
-  const allUsers = [admin, ...citizenDocs];
-  const issueDocs = await Promise.all(
-    SAMPLE_ISSUES.map((issue, i) =>
-      Issue.create({
-        ...issue,
-        reporter: allUsers[i % allUsers.length]._id,
-        upvotes: [],
-        images: [],
-        comments: [],
-        aiAnalysis: {
-          issueType: issue.category,
-          severity: issue.severity,
-          urgency: issue.urgency,
-          authority: issue.authority,
-          title: issue.title,
-          description: issue.description,
-          estimatedFixTime: issue.severity >= 4 ? '1-3 days' : '1-2 weeks',
-          safetyRisk: issue.severity >= 4,
-          tags: [issue.category, 'rourkela', issue.ward <= 10 ? 'civil-area' : 'residential'],
-          confidence: 0.87,
-          analyzedAt: new Date(),
-        },
-        statusHistory: [{ status: issue.status, changedAt: new Date(), note: 'Initial report' }],
-      })
-    )
-  );
+  // Seed 20 issues (only if none exist)
+  const existingIssues = await Issue.countDocuments();
+  let issueDocs = [];
+  if (existingIssues === 0) {
+    const allUsers = [admin, ...citizenDocs];
+    issueDocs = await Promise.all(
+      SAMPLE_ISSUES.map((issue, i) =>
+        Issue.create({
+          ...issue,
+          reporter: allUsers[i % allUsers.length]._id,
+          upvotes: [],
+          images: [],
+          comments: [],
+          aiAnalysis: {
+            issueType: issue.category,
+            severity: issue.severity,
+            urgency: issue.urgency,
+            authority: issue.authority,
+            title: issue.title,
+            description: issue.description,
+            estimatedFixTime: issue.severity >= 4 ? '1-3 days' : '1-2 weeks',
+            safetyRisk: issue.severity >= 4,
+            tags: [issue.category, 'rourkela', issue.ward <= 10 ? 'civil-area' : 'residential'],
+            confidence: 0.87,
+            analyzedAt: new Date(),
+          },
+          statusHistory: [{ status: issue.status, changedAt: new Date(), note: 'Initial report' }],
+        })
+      )
+    );
+    console.log(`✅ ${issueDocs.length} sample issues created at real Rourkela coordinates`);
+  } else {
+    console.log(`📊 ${existingIssues} issues already in DB — skipping issue seed`);
+  }
 
-  console.log(`✅ ${issueDocs.length} sample issues created at real Rourkela coordinates`);
   console.log('\n📊 SEED COMPLETE. Summary:');
   console.log(`   Admin: admin@communityhero.in / Admin@1234`);
   console.log(`   Citizens: *@rourkela.in / User@1234`);
-  console.log(`   Issues: ${issueDocs.length} across ${new Set(SAMPLE_ISSUES.map(i => i.ward)).size} wards`);
-  await mongoose.disconnect();
-  process.exit(0);
+  console.log(`   Issues: ${issueDocs.length || existingIssues} across ${new Set(SAMPLE_ISSUES.map(i => i.ward)).size} wards`);
 }
 
-seed().catch(err => {
-  console.error('❌ Seed failed:', err.message);
-  process.exit(1);
-});
+// Export for programmatic use (called from index.js auto-seed)
+module.exports = { runSeed: seed };
+
+// CLI mode: node src/seeds/seedDatabase.js
+if (require.main === module) {
+  seed()
+    .then(() => mongoose.disconnect())
+    .then(() => process.exit(0))
+    .catch(err => {
+      console.error('❌ Seed failed:', err.message);
+      process.exit(1);
+    });
+}
