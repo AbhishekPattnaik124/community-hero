@@ -6,17 +6,25 @@ logger = logging.getLogger(__name__)
 
 class CivicVisionModel:
     def __init__(self, model_path: str = "yolov8n.pt"):
+        self.model_path = model_path
         self.model = None
         self.use_mock = False
+        self._is_loaded = False
+
+    def _load_model(self):
+        if self._is_loaded:
+            return
         try:
             from ultralytics import YOLO
-            self.model = YOLO(model_path)
-            logger.info(f"Loaded YOLO model from {model_path}")
+            self.model = YOLO(self.model_path)
+            logger.info(f"Loaded YOLO model from {self.model_path}")
         except Exception as e:
             logger.warning(f"Could not load real YOLO model, using mock fallback. Error: {e}")
             self.use_mock = True
+        self._is_loaded = True
 
     def detect(self, image: Image.Image):
+        self._load_model()
         if self.use_mock or not self.model:
             # Return simulated detections for a civic issue
             return [
@@ -40,6 +48,11 @@ class CLIPDuplicateDetector:
         self.processor = None
         self.model = None
         self.use_mock = False
+        self._is_loaded = False
+
+    def _load_model(self):
+        if self._is_loaded:
+            return
         try:
             from transformers import CLIPProcessor, CLIPModel
             self.model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
@@ -48,8 +61,10 @@ class CLIPDuplicateDetector:
         except Exception as e:
             logger.warning(f"Could not load CLIP model, using mock fallback. Error: {e}")
             self.use_mock = True
+        self._is_loaded = True
 
     def extract_embedding(self, image: Image.Image):
+        self._load_model()
         if self.use_mock or not self.model:
             return np.random.rand(512).tolist()
             
