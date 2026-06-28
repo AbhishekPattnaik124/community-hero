@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 function generateAccessToken(user) {
   return jwt.sign(
     { id: user._id, email: user.email, role: user.role },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || 'community-hero-fallback-secret-key-12345',
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
 }
@@ -17,7 +17,7 @@ function generateAccessToken(user) {
 function generateRefreshToken(user) {
   return jwt.sign(
     { id: user._id },
-    process.env.JWT_REFRESH_SECRET,
+    process.env.JWT_REFRESH_SECRET || 'community-hero-fallback-refresh-secret-12345',
     { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d' }
   );
 }
@@ -26,7 +26,7 @@ function generateRefreshToken(user) {
  * Verify refresh token
  */
 function verifyRefreshToken(token) {
-  return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+  return jwt.verify(token, process.env.JWT_REFRESH_SECRET || 'community-hero-fallback-refresh-secret-12345');
 }
 
 /**

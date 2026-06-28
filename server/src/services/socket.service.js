@@ -21,7 +21,7 @@ function initSocket(server) {
 
     const jwt = require('jsonwebtoken');
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'community-hero-fallback-secret-key-12345');
       socket.userId = decoded.id;
       socket.userRole = decoded.role;
       next();
