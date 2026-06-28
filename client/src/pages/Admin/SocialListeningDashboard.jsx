@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Activity, Twitter, Facebook, Youtube, MessageCircle, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
-import api from '../../api/axios';
+import api from "../../api/axios.instance";
 
 const SocialListeningDashboard = () => {
   const [reports, setReports] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Camera, MapPin, Send, AlertCircle } from 'lucide-react';
-import api from '../../api/axios';
+import api from "../../api/axios.instance";
 
 const FilingDashboard = () => {
   const [formData, setFormData] = useState({

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IndianRupee, TrendingDown, AlertTriangle, Activity, Droplet, Car, ShieldAlert } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
-import api from '../../api/axios';
+import api from "../../api/axios.instance";
 
 const FinancialDashboard = () => {
   const [data, setData] = useState(null);

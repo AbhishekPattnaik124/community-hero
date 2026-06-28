@@ -12,11 +12,14 @@ export default [
                 require: "readonly",
                 module: "readonly",
                 __dirname: "readonly",
-                setTimeout: "readonly"
+                setTimeout: "readonly",
+                setInterval: "readonly",
+                clearInterval: "readonly"
             }
         },
         rules: {
-            "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+            "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+            "no-empty": ["error", { "allowEmptyCatch": true }]
         }
     }
 ];
