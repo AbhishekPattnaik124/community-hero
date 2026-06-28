@@ -16,13 +16,24 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Start Kafka Producer
-    await kafka_manager.start()
-    logger.info("ML Service started successfully.")
+    # Startup: Start Kafka Producer (with timeout to prevent hanging if Kafka is down)
+    import asyncio
+    try:
+        await asyncio.wait_for(kafka_manager.start(), timeout=5.0)
+        logger.info("ML Service started successfully (with Kafka).")
+    except asyncio.TimeoutError:
+        logger.warning("Kafka Producer start timed out (skipping). ML Service starting without Kafka.")
+    except Exception as e:
+        logger.warning(f"Kafka Producer failed to start: {e}. ML Service starting without Kafka.")
+    
     yield
     # Shutdown: Stop Kafka Producer
-    await kafka_manager.stop()
+    try:
+        await asyncio.wait_for(kafka_manager.stop(), timeout=3.0)
+    except Exception:
+        pass
     logger.info("ML Service shutdown gracefully.")
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
