@@ -62,9 +62,12 @@ async function bootstrap() {
     process.on('SIGTERM', () => gracefulShutdown(server));
     process.on('SIGINT', () => gracefulShutdown(server));
   } catch (err) {
-    console.error('BOOTSTRAP ERROR:', err);
+    console.error('\n\n!!! FATAL BOOTSTRAP ERROR !!!');
+    console.error(err);
+    console.error(err.stack);
+    console.error('!!! FATAL BOOTSTRAP ERROR !!!\n\n');
     logger.error('❌ Bootstrap failed:', err);
-    process.exit(1);
+    setTimeout(() => { process.exit(1); }, 2000);
   }
 }
 

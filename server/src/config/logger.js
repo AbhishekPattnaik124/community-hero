@@ -43,19 +43,7 @@ const logger = winston.createLogger({
       maxFiles: '30d',
       zippedArchive: true,
     }),
-  ],
-  exceptionHandlers: [
-    new DailyRotateFile({
-      filename: path.join('logs', 'exceptions-%DATE%.log'),
-      datePattern: 'YYYY-MM-DD',
-    }),
-  ],
-  rejectionHandlers: [
-    new DailyRotateFile({
-      filename: path.join('logs', 'rejections-%DATE%.log'),
-      datePattern: 'YYYY-MM-DD',
-    }),
-  ],
+  ]
 });
 
 module.exports = logger;
